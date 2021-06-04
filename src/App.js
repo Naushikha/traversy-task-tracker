@@ -6,14 +6,11 @@ import Tasks from "./components/Tasks";
 import AddTasks from "./components/AddTasks";
 import About from "./components/About";
 
-
 // Helped a lot in fixing the routing issue in DOM
 // https://github.com/ReactTraining/react-router/issues/5946
 
-
-function App() {
-  const [showAddTask, setShowAddTask] = useState(false);
-  const [tasks, setTasks] = useState([
+function getTasks() {
+  const placeholderTasks = [
     {
       id: 1,
       text: "Doctors Appointment",
@@ -32,7 +29,20 @@ function App() {
       day: "Feb 15th at 2:30pm",
       reminder: true,
     },
-  ]);
+  ];
+  // console.log(localStorage.getItem("tasks"));
+  // return placeholderTasks;
+  const tasks = JSON.parse(localStorage.getItem("tasks"));
+  if (tasks === null) {
+    return placeholderTasks;
+  } else {
+    return tasks;
+  }
+}
+
+function App() {
+  const [showAddTask, setShowAddTask] = useState(false);
+  const [tasks, setTasks] = useState(getTasks());
 
   // useEffect(() => {
   //   const getTasks = async () => {
@@ -110,6 +120,11 @@ function App() {
     setTasks([...tasks, newTask]);
   };
 
+  const saveTasks = () => {
+    console.log(tasks);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
   return (
     // https://medium.com/@svinkle/how-to-deploy-a-react-app-to-a-subdirectory-f694d46427c1
     <Router basename={window.location.pathname}>
@@ -117,6 +132,7 @@ function App() {
         <Header
           onAdd={() => setShowAddTask(!showAddTask)}
           showAdd={showAddTask}
+          onSave={saveTasks}
         />
         <Route
           path="/"
