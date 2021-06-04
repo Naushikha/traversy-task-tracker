@@ -7,7 +7,7 @@ const Header = ({ title, onAdd, showAdd }) => {
   return (
     <header className="header">
       <h1>Task Tracker</h1>
-      {location.pathname === `${process.env.PUBLIC_URL}/` && (
+      {location.pathname.split('/').pop() === "" && (
         <Button
           color={showAdd ? "red" : "green"}
           text={showAdd ? "Close" : "Add"}

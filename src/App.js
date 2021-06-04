@@ -6,6 +6,11 @@ import Tasks from "./components/Tasks";
 import AddTasks from "./components/AddTasks";
 import About from "./components/About";
 
+
+// Helped a lot in fixing the routing issue in DOM
+// https://github.com/ReactTraining/react-router/issues/5946
+
+
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([
@@ -107,14 +112,14 @@ function App() {
 
   return (
     // https://medium.com/@svinkle/how-to-deploy-a-react-app-to-a-subdirectory-f694d46427c1
-    <Router>
+    <Router basename={window.location.pathname}>
       <div className="container">
         <Header
           onAdd={() => setShowAddTask(!showAddTask)}
           showAdd={showAddTask}
         />
         <Route
-          path={`${process.env.PUBLIC_URL}/`}
+          path="/"
           exact
           render={(props) => (
             <>
@@ -131,7 +136,7 @@ function App() {
             </>
           )}
         />
-        <Route path={`${process.env.PUBLIC_URL}/about`} component={About} />
+        <Route path="/about" component={About} />
         <Footer />
       </div>
     </Router>
